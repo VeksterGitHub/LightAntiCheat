@@ -1,0 +1,20 @@
+name: LightAntiCheat
+version: ${project.version}
+main: vekster.lightanticheat.LightAntiCheat
+api-version: 1.17
+author: Vekster
+description: Lightweight, accurate, stable anti-cheat for Minecraft
+website: https://www.spigotmc.org/resources/lightanticheat.96341/
+commands:
+  lightanticheat:
+    aliases: lac
+permissions:
+  lightanticheat.reload:
+    default: op
+    description: Allows "/lightanticheat reload"
+  lightanticheat.bypass:
+    default: op
+    description: Bypasses LAC's checks
+  lightanticheat.alerts:
+    default: op
+    description: Shows LAC's notifications

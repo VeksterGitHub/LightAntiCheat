@@ -1,0 +1,114 @@
+#Config variables:
+#%username% - username, %check% - type of check
+
+#The plugin config is auto updated
+#but after plugin update it's recommended to recreate this
+
+punishment:
+  #Enable or disable all checks
+  enable: true
+  #The punishment command. Set "" to disable
+  #Change it if there is no "tempipban" command
+  punishmentCommand: "tempipban %username% 15m &cCheats detected!"
+  #Delay in executing "punishmentCommand" for X seconds
+  #You can use it to confuse cheaters. Set "0" to disable
+  punishmentTimer: 0
+  #Examples of punishment sensitivity setting:
+  #1.0 - default value, player would be kicked after 40 flight flags
+  #0.5 - after 20 flags, 2.0 - after 80 flags
+  sensitivityMultiplier: 1.0
+
+#Leave blank to disable
+#The notifications are seen by console and players with "lightanticheat.alerts" permission
+notifications:
+  #A notifications when a player is suspected of hacking
+  warningNotice: "&f(LAC) &c%username%&f is suspected of &c%check%&f hacking!"
+  #A notifications when the "punishmentCommand" is executed
+  punishmentNotice: "&f(LAC) &c%username%&f is blocked for &c%check%&f hack!"
+
+detection:
+  #It cancels actions of players when they start hacking
+  #It increases accuracy but can warn players about detection
+  cancelHacking: true
+  #This speeds up some movement checks a bit
+  highSpeedMode: false
+  #Disable detection for X seconds upon join. Set "0" to disable
+  disablerTimeOnJoin: 3
+  #Disable flight checks for X seconds upon use elytra/trident. Set "0" to disable
+  disablerTimeOnLegalFlight: 6
+  #Disable detection if the server TPS is less than this value
+  #E.g. "minTps: 12.0". Set "0" to disable
+  minTps: 0.0
+  #Disable detection if the player ping is more than this value (ms)
+  #E.g. "maxPing: 300". Set "0" to disable
+  maxPing: 0
+
+#Examples of check settings:
+#"checks.flight: B,A,D,C" - enable flight check
+#"checks.flight: A,C" - enable partial flight check
+#"checks.flight: false" - disable flight check
+checks:
+  #Checks flight hacks (Flight, PacketFlight, Jetpack, AirJump, etc) | A,B,C,D
+  flight: A,B,C,D
+  #Checks flight on boats (BoatFly) | A
+  boatFly: A
+  #Checks impossible elytra flight speeds (ElytraFly) | A,B
+  elytraFly: A,B
+  #Checks impossible speeds on ground (Speed, GroundSpeed, Step, etc) | A,B
+  speed: A,B
+  #Checks the impossibility of movement (NoFall, HighJump, etc) | A,B,C
+  irregularMovement: A,B,C
+  #Checks walking on liquids (Jesus) | A,B
+  fluidWalk: A,B
+  #Checks the climbing speed (FastClimb) | A
+  fastClimb: A
+  #Checks the speeds in some blocks (NoWeb) | A,B
+  noWeb: A,B
+  #Checks sending bad packets (NoFall, Speed, etc) | A,B
+  groundSpoof: A,B
+  #Checks the speed of sending packets (Timer) | A
+  morePackets: A
+  #Checks hitting on entities (KillAura, MultiAura, etc) | A,B,C
+  killAura: A,B,C
+  #Checks the distance to hit entities (Reach) | A,B
+  reach: A,B
+  #Checks the critical hit conditions (Criticals) | A
+  criticals: A
+  #Checks for impossible block placements (AirPlace, AutoBuild, etc) | A,B
+  irregularPlacement: A,B
+  #Checks for impossible block breaking (Nuker) | A,B
+  nuker: A,B
+
+logs:
+  #Enable or disable logs
+  enable: true
+  #Name of the log file
+  file: logs.txt
+  #Log entry format
+  #Possible components: time, username, uuid, ip, check, ping, tps
+  #Example: "format: username,check,ping,tps,time"
+  format: time,username,uuid,ip,check,ping,tps
+
+geyser:
+  #Enable detection for java players
+  java: true
+  #Enable detection for players playing via Geyser
+  bedrock: true
+
+updateChecker:
+  #Checks if there are any updates on Spigot and lets you know
+  enable: true
+
+permissions:
+  disableBypassPermission: false
+
+debugMode:
+  #Sends a flag notices to console and players with "lightanticheat.alerts" permission
+  #In fact this plugin needs a lot of flags to block player (e.g. 40 flight flags per minute)
+  enable: false
+  debugNotice: "&f(LAC) &c%username%&f is flagged with the&c %check%&f check!"
+
+messages:
+  unknownCommand: "&bUpdate values from 'config.yml': /lac reload"
+  reloadCommand: "&bLightAntiCheat reloaded"
+  unresolvedCommand: "&bYou don't have permission to do this"
