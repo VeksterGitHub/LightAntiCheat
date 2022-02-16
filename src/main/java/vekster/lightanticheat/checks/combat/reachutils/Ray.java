@@ -3,7 +3,7 @@ package vekster.lightanticheat.checks.combat.reachutils;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-//The code for ray tracing by 567legodude
+//This code for ray tracing by 567legodude
 
 // Just a ray class I made with useful methods I needed.
 

@@ -1,7 +1,7 @@
 #Config variables:
 #%username% - username, %check% - type of check
 
-#The plugin config is auto updated
+#This plugin config is auto updated
 #but after plugin update it's recommended to recreate this
 
 punishment:

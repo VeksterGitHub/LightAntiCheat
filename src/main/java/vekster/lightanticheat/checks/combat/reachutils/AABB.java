@@ -3,7 +3,7 @@ package vekster.lightanticheat.checks.combat.reachutils;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-//The code for ray tracing by 567legodude
+//This code for ray tracing by 567legodude
 
 // Just an AABB class I made with some useful methods I needed.
 // Mainly for fast Ray-AABB collision detection.
