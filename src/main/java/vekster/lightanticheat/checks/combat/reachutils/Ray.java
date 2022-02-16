@@ -1,4 +1,4 @@
-package vekster.lightanticheat.checks.combat.utils;
+package vekster.lightanticheat.checks.combat.reachutils;
 
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
