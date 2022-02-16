@@ -108,7 +108,7 @@ public class CombatCheck implements Listener {
 
         //ReachA
         if (Config.reach) {
-            double accurateDistance = AABB.from(entity).collidesD(Ray.from(player), 0, 50);
+            double accurateDistance = AABB.from(entity).collidesD(Ray.from(player), 0, 16);
             if (accurateDistance != -1) {
 
                 accurateDistance += lacPlayer.ping / 75D * 0.2D;
