@@ -108,10 +108,12 @@ public class CombatCheck implements Listener {
 
         //ReachA
         if (Config.reach) {
+            int reachPing = lacPlayer.ping > 125 ? lacPlayer.ping - 125 : -1;
             double accurateDistance = AABB.from(entity).collidesD(Ray.from(player), 0, 16);
             if (accurateDistance != -1) {
 
-                accurateDistance += lacPlayer.ping / 75D * 0.2D;
+                if (reachPing != -1)
+                    accurateDistance -= reachPing / 250D + 0.5D;
                 GameMode gameMode = player.getGameMode();
                 if (accurateDistance >= 5.15D && !noTimeout && (gameMode == GameMode.SURVIVAL || gameMode == GameMode.ADVENTURE))
                     Violations.interactViolation(player, CheckTypes.REACH_A_1, lacPlayer);
@@ -136,7 +138,8 @@ public class CombatCheck implements Listener {
                     distance2 = distance3;
                 if (approximateDistance < distance2)
                     approximateDistance = distance2;
-                approximateDistance += lacPlayer.ping / 75D * 0.3D;
+                if (reachPing != -1)
+                    approximateDistance -= reachPing / 200D + 0.5D;
                 GameMode gameMode = player.getGameMode();
                 if (approximateDistance >= 4.0 && Math.abs(location1.getY() - entityY) < 2.5D &&
                         !noTimeout && (gameMode == GameMode.SURVIVAL || gameMode == GameMode.ADVENTURE))
