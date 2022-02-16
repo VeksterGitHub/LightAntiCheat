@@ -12,9 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class ConfigUpdater {
+//ConfigUpdater by tchristofferson
 
-    //ConfigUpdater by tchristofferson
+public class ConfigUpdater {
 
     //Used for separating keys in the keyBuilder inside parseComments method
     private static final char SEPARATOR = '.';

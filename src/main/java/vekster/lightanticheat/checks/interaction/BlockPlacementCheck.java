@@ -16,8 +16,6 @@ import vekster.lightanticheat.usage.Config;
 
 public class BlockPlacementCheck implements Listener {
 
-    //The block placement checks
-
     private static final BlockFace[] BLOCK_FACES = {BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH_EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST};
 
     private static boolean isAirPlace(Block block) {
@@ -40,8 +38,6 @@ public class BlockPlacementCheck implements Listener {
 
         if (lacPlayer == null || lacPlayer.isBypass || time - lacPlayer.joinTime <= Config.disablerTimeOnJoin ||
                 Config.punishmentCommand == null || lacPlayer.isApiBypass || time - lacPlayer.lastQuickBreakTime < 1000)
-            return;
-        if (!player.getLocation().getChunk().isLoaded())
             return;
 
         //IrregularPlacementB (the placement is not possible)

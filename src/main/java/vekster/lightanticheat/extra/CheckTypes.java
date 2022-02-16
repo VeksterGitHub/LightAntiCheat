@@ -2,8 +2,6 @@ package vekster.lightanticheat.extra;
 
 public enum CheckTypes {
 
-    //Enum of this check names
-
     FLIGHT_A_1,
     FLIGHT_A_2,
     FLIGHT_B_0,
@@ -35,7 +33,6 @@ public enum CheckTypes {
     NUKER_B_0,
     REACH_A_1,
     REACH_A_2,
-    REACH_B_0,
     KILL_AURA_A_0,
     KILL_AURA_B_0,
     KILL_AURA_C_0,

@@ -25,8 +25,6 @@ import java.util.*;
 
 public class MovementCheck implements Listener {
 
-    //The movement checks
-
     private static void cancelFlightMovement(Player player, Location location, CheckTypes checkType, LACPlayer lacPlayer, Block block) {
         if (isBlockAround(block, EnumSet.of(Material.WATER, Material.LAVA)))
             return;

@@ -6,9 +6,9 @@ import vekster.lightanticheat.LightAntiCheat;
 import vekster.lightanticheat.extra.Tps;
 import vekster.lightanticheat.usage.Config;
 
-public class ViolationUpdate {
+//To update this values in LACPlayer
 
-    //To update this values in LACPlayer
+public class ViolationUpdate {
 
     public static void enableViolationUpdate() {
         Bukkit.getScheduler().runTaskTimerAsynchronously(LightAntiCheat.getInstance(), () -> {

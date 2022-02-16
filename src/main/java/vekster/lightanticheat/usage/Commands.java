@@ -8,8 +8,6 @@ import vekster.lightanticheat.LightAntiCheat;
 
 public class Commands implements CommandExecutor {
 
-    //This commands
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

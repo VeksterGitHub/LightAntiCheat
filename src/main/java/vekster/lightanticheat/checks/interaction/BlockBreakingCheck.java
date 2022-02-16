@@ -14,8 +14,6 @@ import vekster.lightanticheat.usage.Config;
 
 public class BlockBreakingCheck implements Listener {
 
-    //The block breaking checks
-
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void breakingCheck(BlockBreakEvent event) {
 
@@ -30,10 +28,6 @@ public class BlockBreakingCheck implements Listener {
                 Config.punishmentCommand == null || lacPlayer.isApiBypass)
             return;
 
-        Location eyeLocation = player.getEyeLocation();
-        if (!eyeLocation.getChunk().isLoaded())
-            return;
-
         //NukerB (the breaking is not possible)
         if (Config.nukerB) {
             if (player.isBlocking() || player.isDead() || player.isSleeping())
@@ -42,6 +36,7 @@ public class BlockBreakingCheck implements Listener {
 
         Block block1 = event.getBlock();
         Location blockLocation = block1.getLocation();
+        Location eyeLocation = player.getEyeLocation();
         if (eyeLocation.distance(blockLocation) < 1.0D || time - lacPlayer.lastClickTime < 100)
             return;
 

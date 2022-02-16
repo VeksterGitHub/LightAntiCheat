@@ -70,8 +70,8 @@ checks:
   morePackets: A
   #Checks hitting on entities (KillAura, MultiAura, etc) | A,B,C
   killAura: A,B,C
-  #Checks the distance to hit entities (Reach) | A,B
-  reach: A,B
+  #Checks the distance to hit entities (Reach) | A
+  reach: A
   #Checks the critical hit conditions (Criticals) | A
   criticals: A
   #Checks for impossible block placements (AirPlace, AutoBuild, etc) | A,B

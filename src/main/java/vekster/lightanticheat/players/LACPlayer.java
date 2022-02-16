@@ -13,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LACPlayer {
 
-    //LACPLayer
-
     public static final Map<Player, LACPlayer> PLAYERS = new ConcurrentHashMap<>();
 
     public boolean isPunishmentTimer = false;

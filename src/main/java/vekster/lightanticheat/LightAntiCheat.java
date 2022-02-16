@@ -20,8 +20,6 @@ import java.util.Objects;
 
 public class LightAntiCheat extends JavaPlugin {
 
-    //The main class
-
     private static LightAntiCheat lightAntiCheat;
 
     @Override

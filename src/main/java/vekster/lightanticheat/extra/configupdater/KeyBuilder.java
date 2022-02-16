@@ -2,9 +2,9 @@ package vekster.lightanticheat.extra.configupdater;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class KeyBuilder implements Cloneable {
+//ConfigUpdater by tchristofferson
 
-    //ConfigUpdater by tchristofferson
+public class KeyBuilder implements Cloneable {
 
     private final FileConfiguration config;
     private final char separator;

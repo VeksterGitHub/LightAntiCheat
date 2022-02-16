@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
-public class SpigotUpdater extends Updater {
+//Updater by Chance
 
-    //Updater
+public class SpigotUpdater extends Updater {
 
     public SpigotUpdater(final Plugin plugin, final int id, final UpdateType type) {
         super(plugin, id, type);

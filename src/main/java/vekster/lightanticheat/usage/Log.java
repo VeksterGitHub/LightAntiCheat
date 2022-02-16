@@ -19,8 +19,6 @@ import java.util.UUID;
 
 public class Log {
 
-    //For the log file
-
     private final File file;
     private final FileConfiguration config;
     private static vekster.lightanticheat.usage.Log log;

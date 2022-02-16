@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class Config {
 
-    //For the config file
-
     public static String punishmentCommand;
     public static boolean punishmentTimer;
     public static int punishmentTimerDelayTime;
@@ -53,8 +51,6 @@ public class Config {
     public static boolean nukerA;
     public static boolean nukerB;
     public static boolean reach;
-    public static boolean reachA;
-    public static boolean reachB;
     public static boolean groundSpoof;
     public static boolean groundSpoofA;
     public static boolean groundSpoofB;
@@ -154,10 +150,7 @@ public class Config {
         nukerA = nukerString.contains("A");
         nukerB = nukerString.contains("B");
         nuker = nukerA || nukerB;
-        String reachString = checksSection.getString("reach");
-        reachA = reachString.contains("A");
-        reachB = reachString.contains("B");
-        reach = reachA || reachB;
+        reach = checksSection.getString("reach").contains("A");
         String groundSpoofString = checksSection.getString("groundSpoof");
         groundSpoofA = groundSpoofString.contains("A");
         groundSpoofB = groundSpoofString.contains("B");

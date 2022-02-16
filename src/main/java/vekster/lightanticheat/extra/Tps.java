@@ -5,8 +5,6 @@ import vekster.lightanticheat.LightAntiCheat;
 
 public class Tps {
 
-    //To get the server tps
-
     public static double tps = 20.0D;
     private static long lastTime = 0;
 

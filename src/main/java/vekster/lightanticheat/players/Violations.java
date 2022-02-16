@@ -11,9 +11,9 @@ import vekster.lightanticheat.extra.CheckTypes;
 import vekster.lightanticheat.usage.Config;
 import vekster.lightanticheat.usage.Log;
 
-public class Violations extends Config {
+//The methods for counting violations
 
-    //The methods for counting violations
+public class Violations extends Config {
 
     private static short maxMovementViolations;
     private static short halfOfMaxMovementViolations;

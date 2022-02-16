@@ -17,8 +17,6 @@ import vekster.lightanticheat.usage.Log;
 
 public class Alerts {
 
-    //The notification methods
-
     private static final String lacVersion = LightAntiCheat.getInstance().getDescription().getVersion();
 
     public static void checkForUnsupportedVersion() {

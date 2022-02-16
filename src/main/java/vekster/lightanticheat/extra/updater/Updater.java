@@ -5,9 +5,9 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
-public abstract class Updater {
+//Updater by Chance
 
-    //Abstract updater
+public abstract class Updater {
 
     public enum UpdateType {
         VERSION_CHECK, DOWNLOAD
