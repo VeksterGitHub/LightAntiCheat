@@ -17,7 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 import vekster.lightanticheat.checks.combat.reachutils.AABB;
 import vekster.lightanticheat.checks.combat.reachutils.Ray;
-import vekster.lightanticheat.extra.CheckTypes;
+import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.players.LACPlayer;
 import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;

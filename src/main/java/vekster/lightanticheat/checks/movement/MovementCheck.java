@@ -16,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-import vekster.lightanticheat.extra.CheckTypes;
+import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.players.LACPlayer;
 import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;

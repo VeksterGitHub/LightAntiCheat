@@ -7,7 +7,7 @@ import vekster.lightanticheat.LightAntiCheat;
 import vekster.lightanticheat.api.LacFlagEvent;
 import vekster.lightanticheat.api.LacPunishmentEvent;
 import vekster.lightanticheat.extra.Alerts;
-import vekster.lightanticheat.extra.CheckTypes;
+import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.usage.Config;
 import vekster.lightanticheat.usage.Log;
 
