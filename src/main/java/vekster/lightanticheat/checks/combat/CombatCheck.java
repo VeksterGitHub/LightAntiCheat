@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import vekster.lightanticheat.checks.combat.reachutils.AABB;
 import vekster.lightanticheat.checks.combat.reachutils.Ray;
 import vekster.lightanticheat.api.CheckTypes;
@@ -51,7 +52,7 @@ public class CombatCheck implements Listener {
 
         Location location1 = player.getLocation();
         Location eyeLocation = player.getEyeLocation();
-        int ping = lacPlayer.ping;
+        int pingLag = lacPlayer.ping > 125 ? lacPlayer.ping - 125 : -1;
         boolean noTimeout = time - lacPlayer.lastHitTime < 8;
         double distance = eyeLocation.distance(location2);
         CheckTypes killAuraType = null;
@@ -65,9 +66,10 @@ public class CombatCheck implements Listener {
 
         //KillAuraB (the player doesn't look at the entity)
         if (Config.killAuraB && distance > 1.5D && !noTimeout) {
-            float angle = eyeLocation.getDirection().angle(location2.toVector().setY(0.0D).subtract(eyeLocation.toVector().setY(0.0D)));
-            if (ping > 150)
-                angle -= 1;
+            Vector vector = location2.toVector().setY(0.0D).subtract(eyeLocation.toVector().setY(0.0D));
+            float angle = eyeLocation.getDirection().angle(vector);
+            if (pingLag != -1)
+                angle -= pingLag / 125D + 1.0D;
             if (Math.sqrt(Math.pow(entity.getWidth(), 2.0D) + Math.pow(entity.getHeight(), 2.0D)) > 2.5D)
                 angle -= 1;
             if (distance < 2.0D)
@@ -108,12 +110,11 @@ public class CombatCheck implements Listener {
 
         //ReachA
         if (Config.reach) {
-            int reachPing = lacPlayer.ping > 125 ? lacPlayer.ping - 125 : -1;
             double accurateDistance = AABB.from(entity).collidesD(Ray.from(player), 0, 16);
             if (accurateDistance != -1) {
 
-                if (reachPing != -1)
-                    accurateDistance -= reachPing / 250D + 0.5D;
+                if (pingLag != -1)
+                    accurateDistance -= pingLag / 250D + 0.5D;
                 GameMode gameMode = player.getGameMode();
                 if (accurateDistance >= 5.15D && !noTimeout && (gameMode == GameMode.SURVIVAL || gameMode == GameMode.ADVENTURE))
                     Violations.interactViolation(player, CheckTypes.REACH_A_1, lacPlayer);
@@ -138,8 +139,8 @@ public class CombatCheck implements Listener {
                     distance2 = distance3;
                 if (approximateDistance < distance2)
                     approximateDistance = distance2;
-                if (reachPing != -1)
-                    approximateDistance -= reachPing / 200D + 0.5D;
+                if (pingLag != -1)
+                    approximateDistance -= pingLag / 200D + 0.5D;
                 GameMode gameMode = player.getGameMode();
                 if (approximateDistance >= 4.05D && Math.abs(location1.getY() - entityY) < 2.5D &&
                         !noTimeout && (gameMode == GameMode.SURVIVAL || gameMode == GameMode.ADVENTURE))

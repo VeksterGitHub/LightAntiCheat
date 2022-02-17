@@ -5,6 +5,11 @@ api-version: 1.17
 author: Vekster
 description: Lightweight, accurate, stable anti-cheat for Minecraft
 website: https://www.spigotmc.org/resources/lightanticheat.96341/
+softdepend:
+  - Geyser-Spigot
+  - floodgate
+  - ViaVersion
+  - ProtocolSupport
 commands:
   lightanticheat:
     aliases: lac
