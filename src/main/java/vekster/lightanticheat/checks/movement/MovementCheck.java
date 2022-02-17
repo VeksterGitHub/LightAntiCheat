@@ -299,7 +299,8 @@ public class MovementCheck implements Listener {
         if (!isGround && !glidingIsPossible) {
             Block targetBlock1 = player.getTargetBlockExact(1);
             boolean lookAtAir = targetBlock1 == null || targetBlock1.isEmpty();
-            if ((noGroundTimeInRow > 1250 || Config.highSpeedMode && noGroundTimeInRow > 500) && speedEffect == null && jumpEffect == null || noGroundTimeInRow > 1875 || Config.highSpeedMode && noGroundTimeInRow > 700) {
+            if ((noGroundTimeInRow > 1250 || Config.highSpeedMode && noGroundTimeInRow > 500) && speedEffect == null && jumpEffect == null ||
+                    (noGroundTimeInRow > 1875 || Config.highSpeedMode && noGroundTimeInRow > 700)) {
                 if (Config.flight && (lookAtAir || fallDistance != 0.0F)) {
                     //FlightA
                     if (Config.flightA && (fallDistance < 25.0F && velocity < -2.2D && speed > 0.2D || fallDistance > 25.0F && fallDistance < 50.0F && velocity < -2.7D && speed > 0.25D))
