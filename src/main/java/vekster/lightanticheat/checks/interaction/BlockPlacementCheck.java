@@ -51,6 +51,8 @@ public class BlockPlacementCheck implements Listener {
         Material material = block.getType();
         PlayerInventory playerInventory = player.getInventory();
 
+        if (Config.irregularPlacementA)
+            return;
         if (material.name().contains("LILY_PAD") || playerInventory.getItemInMainHand().getType().name().contains("AXE") ||
                 playerInventory.getItemInOffHand().getType().name().contains("AXE"))
             return;
