@@ -1,11 +1,11 @@
 package vekster.lightanticheat.extra.updater;
 
-import org.bukkit.plugin.Plugin;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
+
+import org.bukkit.plugin.Plugin;
 
 //Updater by Chance
 

@@ -1,9 +1,9 @@
 package vekster.lightanticheat.extra.updater;
 
+import java.io.File;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-
-import java.io.File;
 
 //Updater by Chance
 
@@ -14,13 +14,15 @@ public abstract class Updater {
     }
 
     public enum UpdateResult {
-        SUCCESS, NO_UPDATE, FAIL_DOWNLOAD, FAIL_DBO, FAIL_NOVERSION, UPDATE_AVAILABLE
+        SUCCESS, NO_UPDATE, FAIL_DOWNLOAD, FAIL_DBO, FAIL_NOVERSION, FAIL_BADID, UPDATE_AVAILABLE
     }
 
     protected String versionName;
     protected String versionLink;
+    protected String versionType;
+    protected String versionGameVersion;
 
-    private static final String[] TAGS = {"-DEV", "-PRE", "-SNAPSHOT"};
+    private static final String[] TAGS = { "-DEV", "-PRE", "-SNAPSHOT" };
     private UpdateResult result = UpdateResult.SUCCESS;
     private final Thread thread;
     protected final Plugin plugin;
@@ -33,7 +35,12 @@ public abstract class Updater {
         this.id = id;
         this.type = type;
         this.file = new File(Bukkit.getUpdateFolderFile(), plugin.getName() + ".jar");
-        this.thread = new Thread(this::runUpdater);
+        this.thread = new Thread() {
+            @Override
+            public void run() {
+                runUpdater();
+            }
+        };
     }
 
     public final UpdateResult getResult() {
@@ -120,12 +127,20 @@ public abstract class Updater {
         return thread;
     }
 
+    protected final Plugin getPlugin() {
+        return plugin;
+    }
+
     protected final int getId() {
         return id;
     }
 
     public final UpdateType getType() {
         return type;
+    }
+
+    protected final File getFile() {
+        return file;
     }
 
     protected final void setResult(final UpdateResult result) {
@@ -135,6 +150,21 @@ public abstract class Updater {
     public final String getLatestName() {
         this.waitForThread();
         return this.versionName;
+    }
+
+    public final String getLatestFileLink() {
+        this.waitForThread();
+        return this.versionLink;
+    }
+
+    public final String getLatestType() {
+        this.waitForThread();
+        return this.versionType;
+    }
+
+    public final String getLatestGameVersion() {
+        this.waitForThread();
+        return this.versionGameVersion;
     }
 
     protected abstract boolean read();
