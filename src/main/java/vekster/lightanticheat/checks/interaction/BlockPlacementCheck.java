@@ -20,7 +20,7 @@ public class BlockPlacementCheck implements Listener {
 
     private static boolean isAirPlace(Block block) {
         for (BlockFace blockFace : BLOCK_FACES) {
-            if (!block.getRelative(blockFace).isEmpty() && !block.getRelative(blockFace).isPassable())
+            if (!block.getRelative(blockFace).isEmpty() && !block.getRelative(blockFace).isLiquid())
                 return false;
         }
         return true;
