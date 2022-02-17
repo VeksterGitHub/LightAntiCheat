@@ -141,7 +141,7 @@ public class CombatCheck implements Listener {
                 if (reachPing != -1)
                     approximateDistance -= reachPing / 200D + 0.5D;
                 GameMode gameMode = player.getGameMode();
-                if (approximateDistance >= 4.0 && Math.abs(location1.getY() - entityY) < 2.5D &&
+                if (approximateDistance >= 4.05D && Math.abs(location1.getY() - entityY) < 2.5D &&
                         !noTimeout && (gameMode == GameMode.SURVIVAL || gameMode == GameMode.ADVENTURE))
                     Violations.interactViolation(player, CheckTypes.REACH_A_2, lacPlayer);
 
