@@ -1,4 +1,4 @@
-package vekster.lightanticheat.api;
+package vekster.lightanticheat.extra;
 
 public enum CheckTypes {
 

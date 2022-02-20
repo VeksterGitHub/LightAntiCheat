@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import vekster.lightanticheat.LightAntiCheat;
-import vekster.lightanticheat.api.CheckTypes;
+import vekster.lightanticheat.extra.CheckTypes;
 import vekster.lightanticheat.extra.Tps;
 import vekster.lightanticheat.players.LACPlayer;
 

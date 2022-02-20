@@ -65,6 +65,7 @@ public class Config {
     public static int disablerTimeOnLegalFlight;
     public static double minTps;
     public static int maxPing;
+    public static int pingLimit;
     public static double sensitivityMultiplier;
     public static boolean debugMode;
     public static String[] logsFormat;
@@ -104,6 +105,7 @@ public class Config {
         disablerTimeOnLegalFlight = detectionSection.getInt("disablerTimeOnLegalFlight") * 1000;
         minTps = detectionSection.getDouble("minTps");
         maxPing = detectionSection.getInt("maxPing");
+        pingLimit = detectionSection.getInt("pingLimit");
 
         ConfigurationSection debugModeSection = config.getConfigurationSection("debugMode");
         debugMode = debugModeSection.getBoolean("enable");

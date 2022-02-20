@@ -1,16 +1,13 @@
 package vekster.lightanticheat.checks.interaction;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.util.Vector;
-import vekster.lightanticheat.api.CheckTypes;
+import vekster.lightanticheat.extra.CheckTypes;
 import vekster.lightanticheat.players.LACPlayer;
 import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;

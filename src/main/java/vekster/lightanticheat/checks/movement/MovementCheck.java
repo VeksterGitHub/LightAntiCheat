@@ -16,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-import vekster.lightanticheat.api.CheckTypes;
+import vekster.lightanticheat.extra.CheckTypes;
 import vekster.lightanticheat.players.LACPlayer;
 import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;
@@ -138,7 +138,8 @@ public class MovementCheck implements Listener {
                 time - lacPlayer.lastTeleportTime <= 1000)
             return;
 
-        Violations.morepacketsViolation(player, lacPlayer);
+        if (Config.morePackets)
+            Violations.morepacketsViolation(player, lacPlayer);
 
         if (player.isFlying()) {
             lacPlayer.lastGroundTime = time;

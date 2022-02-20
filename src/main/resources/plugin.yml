@@ -16,10 +16,22 @@ commands:
 permissions:
   lightanticheat.reload:
     default: op
-    description: Allows "/lightanticheat reload"
+    description: Allow "/lightanticheat reload"
   lightanticheat.bypass:
     default: op
-    description: Bypasses LAC's checks
+    description: Bypasse all checks
   lightanticheat.alerts:
     default: op
-    description: Shows LAC's notifications
+    description: Show all notifications
+  lightanticheat.alerts.punishment:
+    default: op
+    description: Show punishment notifications
+  lightanticheat.alerts.warn:
+    default: op
+    description: Show warn notifications
+  lightanticheat.alerts.debug:
+    default: op
+    description: Show debug notifications
+  lightanticheat.alerts.update:
+    default: op
+    description: Show update notifications

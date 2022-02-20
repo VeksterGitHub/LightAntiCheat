@@ -9,12 +9,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import vekster.lightanticheat.LightAntiCheat;
-import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.extra.updater.SpigotUpdater;
 import vekster.lightanticheat.extra.updater.Updater;
 import vekster.lightanticheat.players.LACPlayer;
+import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;
 import vekster.lightanticheat.usage.Log;
+
+import java.util.Collection;
 
 public class Alerts {
 
@@ -36,15 +38,33 @@ public class Alerts {
     }
 
     public static void debugNotification(Player player, CheckTypes check) {
-        Bukkit.broadcast(Config.debugNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check)), "lightanticheat.alerts");
+        Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+        String alert = Config.debugNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check));
+        for (final Player onlinePlayer : onlinePlayers)
+            if (onlinePlayer.hasPermission("lightanticheat.alerts") || onlinePlayer.hasPermission("lightanticheat.alerts.debug"))
+                player.sendMessage(alert);
     }
 
     public static void waringNotification(Player player, CheckTypes check, LACPlayer lacPlayer) {
         final long time = System.currentTimeMillis();
         if (time - lacPlayer.lastWarningAlertTime > 60000) {
-            Bukkit.broadcast(Config.warningNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check)), "lightanticheat.alerts");
+            Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+            String alert = Config.warningNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check));
+            for (final Player onlinePlayer : onlinePlayers)
+                if (onlinePlayer.hasPermission("lightanticheat.alerts") || onlinePlayer.hasPermission("lightanticheat.alerts.warn"))
+                    player.sendMessage(alert);
             lacPlayer.lastWarningAlertTime = time;
         }
+    }
+
+    public static void punishmentNotification(Player player, CheckTypes check) {
+        if (Config.punishmentNotice == null)
+            return;
+        Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+        String alert = Config.punishmentNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check));
+        for (final Player onlinePlayer : onlinePlayers)
+            if (onlinePlayer.hasPermission("lightanticheat.alerts") || onlinePlayer.hasPermission("lightanticheat.alerts.punishment"))
+                player.sendMessage(alert);
     }
 
     public static void checkForUpdates() {
@@ -60,7 +80,7 @@ public class Alerts {
                     Bukkit.getConsoleSender().sendMessage("§c(§fLAC§c)§f Update available: §cLightAntiCheat " + updater.getLatestName());
                     Bukkit.getConsoleSender().sendMessage("§c(§fLAC§c)§7 Spigot link: https://www.spigotmc.org/resources/lightanticheat.96341/");
                     for (final Player player : Bukkit.getOnlinePlayers())
-                        if (player.hasPermission("lightanticheat.alerts"))
+                        if (player.hasPermission("lightanticheat.alerts") || player.hasPermission("lightanticheat.alerts.update"))
                             player.spigot().sendMessage(updateNotification);
                 }
             }, 0, 360000);

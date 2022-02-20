@@ -21,7 +21,8 @@ public class ViolationUpdate {
                 //lacPlayer.ping
                 lacPlayer.ping = player.getPing();
                 //lacPlayer.isBypass
-                if (Config.minTps != 0.0D && Tps.tps < Config.minTps || Config.maxPing != 0 && lacPlayer.ping > Config.maxPing ||
+                if (Config.minTps != 0.0D && Tps.tps < Config.minTps ||
+                        (Config.maxPing != 0 && lacPlayer.ping > Config.maxPing && (Config.pingLimit == 0 || lacPlayer.ping < Config.pingLimit)) ||
                         !Config.java && !lacPlayer.isGeyser || !Config.bedrock && lacPlayer.isGeyser) {
                     lacPlayer.isBypass = true;
                 } else if (lacPlayer.counterForViolationUpdate % 3 == 0) {

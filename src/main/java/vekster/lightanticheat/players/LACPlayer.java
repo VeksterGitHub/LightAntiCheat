@@ -81,8 +81,8 @@ public class LACPlayer {
     public static void addAllPlayers() {
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
         if (!onlinePlayers.isEmpty()) {
-            for (final Player eachPlayer : onlinePlayers)
-                add(eachPlayer);
+            for (final Player onlinePlayer : onlinePlayers)
+                add(onlinePlayer);
             Alerts.serverReloadedAlert();
         }
     }

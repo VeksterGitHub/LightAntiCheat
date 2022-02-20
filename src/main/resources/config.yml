@@ -42,6 +42,9 @@ detection:
   #Disable detection if the player ping is more than this value (ms)
   #E.g. "maxPing: 300". Set "0" to disable
   maxPing: 0
+  #Check the player if "ping" < "maxPing" or "ping" > "pingLimit"
+  #E.g. "maxPing: 2000". Set "0" to disable
+  pingLimit: 0
 
 #Examples of check settings:
 #"checks.flight: B,A,D,C" - enable flight check
