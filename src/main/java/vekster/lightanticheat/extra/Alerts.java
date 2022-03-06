@@ -40,6 +40,7 @@ public class Alerts {
     public static void debugNotification(Player player, CheckTypes check) {
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
         String alert = Config.debugNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check));
+        Bukkit.getConsoleSender().sendMessage(alert);
         for (final Player onlinePlayer : onlinePlayers)
             if (onlinePlayer.hasPermission("lightanticheat.alerts") || onlinePlayer.hasPermission("lightanticheat.alerts.debug"))
                 player.sendMessage(alert);
@@ -50,6 +51,7 @@ public class Alerts {
         if (time - lacPlayer.lastWarningAlertTime > 60000) {
             Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
             String alert = Config.warningNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check));
+            Bukkit.getConsoleSender().sendMessage(alert);
             for (final Player onlinePlayer : onlinePlayers)
                 if (onlinePlayer.hasPermission("lightanticheat.alerts") || onlinePlayer.hasPermission("lightanticheat.alerts.warn"))
                     player.sendMessage(alert);
@@ -62,6 +64,7 @@ public class Alerts {
             return;
         Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
         String alert = Config.punishmentNotice.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check));
+        Bukkit.getConsoleSender().sendMessage(alert);
         for (final Player onlinePlayer : onlinePlayers)
             if (onlinePlayer.hasPermission("lightanticheat.alerts") || onlinePlayer.hasPermission("lightanticheat.alerts.punishment"))
                 player.sendMessage(alert);
