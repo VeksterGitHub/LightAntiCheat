@@ -52,16 +52,16 @@ public class MovementCheck implements Listener {
             if (lacPlayer.movementViolations < 20 || !Config.cancelHacking)
                 return;
 
-            Block block1 = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(location);
-            if (block1 == null)
+            Block highestBlock = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(location);
+            if (highestBlock == null)
                 return;
-            Location teleportLocation = block1.getLocation().add(0, 1, 0);
+            Location highestLocation = highestBlock.getLocation().add(0, 1, 0);
 
-            if (block1.isEmpty()) {
+            if (highestBlock.isEmpty()) {
                 player.teleport(location.subtract(0, 1, 0.));
                 location.add(0, 1, 0);
-            } else if (location.getY() > teleportLocation.getY()) {
-                player.teleport(teleportLocation);
+            } else if (location.getY() > highestLocation.getY()) {
+                player.teleport(highestLocation);
                 Violations.accurateViolation(player, checkType, lacPlayer);
             } else {
                 player.teleport(location);
