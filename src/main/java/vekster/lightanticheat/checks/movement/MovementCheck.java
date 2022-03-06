@@ -31,12 +31,12 @@ public class MovementCheck implements Listener {
 
         //Does the player move
         if (lacPlayer.movementViolations == 0) {
-            lacPlayer.lastNonGroundViolationX = (float) (Math.round(location.getX() * 10.0D) / 10.0D);
-            lacPlayer.lastNonGroundViolationY = (float) (Math.round(location.getY() * 10.0D) / 10.0D);
-            lacPlayer.lastNonGroundViolationZ = (float) (Math.round(location.getZ() * 10.0D) / 10.0D);
-        } else if (Math.abs(Math.round(location.getX() * 10.0D) / 10.0D - lacPlayer.lastNonGroundViolationX) < 0.7D &&
-                Math.abs(Math.round(location.getZ() * 10.0D) / 10.0D - lacPlayer.lastNonGroundViolationZ) < 0.7D &&
-                Math.abs(Math.round(location.getZ() * 10.0D) / 10.0D - lacPlayer.lastNonGroundViolationZ) < 4.0D) {
+            lacPlayer.lastNonGroundViolationX = (float) location.getX();
+            lacPlayer.lastNonGroundViolationY = (float) location.getY();
+            lacPlayer.lastNonGroundViolationZ = (float) location.getZ();
+        } else if (location.getX() - lacPlayer.lastNonGroundViolationX < 0.7D &&
+                location.getZ() - lacPlayer.lastNonGroundViolationZ < 0.7D &&
+                location.getZ() - lacPlayer.lastNonGroundViolationZ < 4.0D) {
             return;
         }
 
@@ -47,14 +47,15 @@ public class MovementCheck implements Listener {
             if (!player.getNearbyEntities(1.0D, 10.0D, 1.0D).isEmpty())
                 return;
 
-            Block block1 = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(location);
-            if (block1 == null)
-                return;
-            Location teleportLocation = block1.getLocation().add(0, 1, 0);
             Violations.movementViolation(player, checkType, lacPlayer);
 
             if (lacPlayer.movementViolations < 20 || !Config.cancelHacking)
                 return;
+
+            Block block1 = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(location);
+            if (block1 == null)
+                return;
+            Location teleportLocation = block1.getLocation().add(0, 1, 0);
 
             if (block1.isEmpty()) {
                 player.teleport(location.subtract(0, 1, 0.));
@@ -165,8 +166,8 @@ public class MovementCheck implements Listener {
 
         PlayerInventory playerInventory = player.getInventory();
         boolean isRiptiding = player.isRiptiding() &&
-                (playerInventory.getItemInMainHand().getType().name().contains("TRIDENT") ||
-                        playerInventory.getItemInOffHand().getType().name().contains("TRIDENT"));
+                (playerInventory.getItemInMainHand().getType() == Material.TRIDENT ||
+                        playerInventory.getItemInOffHand().getType() == Material.TRIDENT);
         Block block1 = toLocation.getBlock();
         double y = toLocation.getY();
         if (y % 1.0D > 0.85D)
@@ -206,8 +207,8 @@ public class MovementCheck implements Listener {
 
             //ElytraFlyA (the player speed doesn't change)
             float roundSpeed = (float) (Math.round(speed * 10000.0D) / 10000.0D);
-            if (playerInventory.getItemInMainHand().getType().name().contains("FIREWORK") ||
-                    playerInventory.getItemInOffHand().getType().name().contains("FIREWORK"))
+            if (playerInventory.getItemInMainHand().getType() == Material.FIREWORK_ROCKET ||
+                    playerInventory.getItemInOffHand().getType() == Material.FIREWORK_ROCKET)
                 lacPlayer.lastFireworkTime = time;
             if (Config.elytraFlyA) {
                 if (roundSpeed == lacPlayer.lastElytraSpeed && time - lacPlayer.lastFireworkTime > 1000)
