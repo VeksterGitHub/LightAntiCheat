@@ -9,6 +9,8 @@ punishment:
   enable: true
   #The punishment command. Set "" to disable
   #Change it if there is no "tempipban" command
+  #Use "nextCommand" to set a few punishment commands
+  #E.g. "kick %username% Cheats!nextCommandsay %username% is kicked!"
   punishmentCommand: "tempipban %username% 15m &cCheats detected!"
   #Delay in executing "punishmentCommand" for X seconds
   #You can use it to confuse cheaters. Set "0" to disable
@@ -42,9 +44,6 @@ detection:
   #Disable detection if the player ping is more than this value (ms)
   #E.g. "maxPing: 300". Set "0" to disable
   maxPing: 0
-  #Check the player if "ping" < "maxPing" or "ping" > "pingLimit"
-  #E.g. "maxPing: 2000". Set "0" to disable
-  pingLimit: 0
 
 #Examples of check settings:
 #"checks.flight: B,A,D,C" - enable flight check
@@ -57,8 +56,8 @@ checks:
   boatFly: A
   #Checks impossible elytra flight speeds (ElytraFly) | A,B
   elytraFly: A,B
-  #Checks impossible speeds on ground (Speed, GroundSpeed, Step, etc) | A,B
-  speed: A,B
+  #Checks impossible speeds on ground (Speed, GroundSpeed, etc) | A
+  speed: A
   #Checks the impossibility of movement (NoFall, HighJump, etc) | A,B,C
   irregularMovement: A,B,C
   #Checks walking on liquids (Jesus) | A,B
@@ -67,8 +66,8 @@ checks:
   fastClimb: A
   #Checks the speeds in some blocks (NoWeb) | A,B
   noWeb: A,B
-  #Checks sending bad packets (NoFall, Speed, etc) | A,B
-  groundSpoof: A,B
+  #Checks sending bad packets (NoFall, Speed, etc) | A
+  groundSpoof: A
   #Checks the speed of sending packets (Timer) | A
   morePackets: A
   #Checks hitting on entities (KillAura, MultiAura, etc) | A,B,C

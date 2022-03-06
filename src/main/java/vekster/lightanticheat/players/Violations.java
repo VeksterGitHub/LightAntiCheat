@@ -7,7 +7,7 @@ import vekster.lightanticheat.LightAntiCheat;
 import vekster.lightanticheat.api.LacFlagEvent;
 import vekster.lightanticheat.api.LacPunishmentEvent;
 import vekster.lightanticheat.extra.Alerts;
-import vekster.lightanticheat.extra.CheckTypes;
+import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.usage.Config;
 import vekster.lightanticheat.usage.Log;
 
@@ -181,7 +181,8 @@ public class Violations extends Config {
         pluginManager.callEvent(event);
         if (event.isCancelled())
             return;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Violations.punishmentCommand.replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check)));
+        for (byte i = 0; i < Config.punishmentCommand.length; i = (byte) (i + 1))
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Violations.punishmentCommand[i].replace("%username%", player.getName()).replace("%check%", Log.checkTypeToString(check)));
         vekster.lightanticheat.usage.Log.logViolation(player, check, lacPlayer);
         Alerts.punishmentNotification(player, check);
         Bukkit.getScheduler().runTaskLater(LightAntiCheat.getInstance(), () -> {

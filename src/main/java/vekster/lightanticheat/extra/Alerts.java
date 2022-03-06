@@ -9,10 +9,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import vekster.lightanticheat.LightAntiCheat;
+import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.extra.updater.SpigotUpdater;
 import vekster.lightanticheat.extra.updater.Updater;
 import vekster.lightanticheat.players.LACPlayer;
-import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;
 import vekster.lightanticheat.usage.Log;
 

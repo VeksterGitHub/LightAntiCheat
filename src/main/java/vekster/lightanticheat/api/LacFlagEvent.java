@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import vekster.lightanticheat.extra.CheckTypes;
 import vekster.lightanticheat.usage.Log;
 
 public class LacFlagEvent extends Event implements Cancellable {

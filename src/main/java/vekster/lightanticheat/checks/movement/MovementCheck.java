@@ -16,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-import vekster.lightanticheat.extra.CheckTypes;
+import vekster.lightanticheat.api.CheckTypes;
 import vekster.lightanticheat.players.LACPlayer;
 import vekster.lightanticheat.players.Violations;
 import vekster.lightanticheat.usage.Config;
@@ -85,6 +85,14 @@ public class MovementCheck implements Listener {
         }
     }
 
+    public static void speedViolation(Player player, Location fromLocation, Location toLocation, CheckTypes checkType, LACPlayer lacPlayer, Block block) {
+        if (Math.abs(fromLocation.getX() - toLocation.getX()) > 0.03D && Math.abs(fromLocation.getZ() - toLocation.getZ()) > 0.03D) {
+            cancelMovement(player, fromLocation, checkType, lacPlayer, block);
+        } else if (inaccurateViolation(lacPlayer)) {
+            cancelMovement(player, fromLocation, checkType, lacPlayer, block);
+        }
+    }
+
     //Cancel first flags
     public static boolean cancelFirstViolations(LACPlayer lacPlayer, byte add) {
         if (lacPlayer.forCancelFirstViolationMethod >= 6)
@@ -126,6 +134,10 @@ public class MovementCheck implements Listener {
         return true;
     }
 
+    private static boolean isBlockY(double y) {
+        return Math.round(y % 1.0D * 100000.0D % 25.0D) == 0;
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void move(PlayerMoveEvent event) {
 
@@ -156,6 +168,9 @@ public class MovementCheck implements Listener {
                 (playerInventory.getItemInMainHand().getType().name().contains("TRIDENT") ||
                         playerInventory.getItemInOffHand().getType().name().contains("TRIDENT"));
         Block block1 = toLocation.getBlock();
+        double y = toLocation.getY();
+        if (y % 1.0D > 0.85D)
+            block1 = block1.getRelative(BlockFace.UP);
         Block block = block1.getRelative(BlockFace.DOWN);
 
         if (time - lacPlayer.lastPreventTime <= Config.disablerTimeOnLegalFlight) {
@@ -170,7 +185,6 @@ public class MovementCheck implements Listener {
         if (fromLocation == null)
             return;
         Block fromBlock = fromLocation.getBlock().getRelative(BlockFace.DOWN);
-        double y = toLocation.getY();
         double fromY = fromLocation.getY();
         double speed = fromLocation.distance(toLocation);
         Entity vehicle = player.getVehicle();
@@ -227,17 +241,50 @@ public class MovementCheck implements Listener {
         double verticalSpeedExactly = fromY - y;
         double verticalSpeed = Math.abs(verticalSpeedExactly);
         float fallDistance = player.getFallDistance();
-        boolean isOnBlockY = Math.round(y % 1.0D * 100000.0D % 25.0D) == 0;
-        boolean isOnBlockFromY = Math.round(fromY % 1.0D * 100000.0D % 25.0D) == 0;
+        boolean isOnBlockY = isBlockY(y);
+        boolean isOnBlockFromY = isBlockY(fromY);
         boolean isGround = !block.isPassable() || block.isLiquid() || isOnGround && fallDistance == 0.0F && verticalSpeed == 0.0D && Math.abs(velocity) < 0.1D && isOnBlockY && isOnBlockFromY;
-        boolean isNoGround = block.isPassable() || block.isLiquid() || !isOnBlockY && Math.round(fromY % 1.0D * 100000.0D % 25.0D) != 0;
         long noGroundTimeInRow = time - lacPlayer.lastGroundTime;
-        long groundTimeInRow = time - lacPlayer.lastNonGroundTime;
         PotionEffect speedEffect = player.getPotionEffect(PotionEffectType.SPEED);
         PotionEffect jumpEffect = player.getPotionEffect(PotionEffectType.JUMP);
         boolean noFlightEffect = player.getPotionEffect(PotionEffectType.LEVITATION) == null && player.getPotionEffect(PotionEffectType.SLOW_FALLING) == null;
         String block2 = block1.getType().name();
         String block3 = block1.getRelative(BlockFace.UP).getType().name();
+        boolean isGroundCheck = y == lacPlayer.lastY && y == lacPlayer.lastLastY ||
+                verticalSpeed < 0.05D && (isBlockY(lacPlayer.lastY) || isBlockY(lacPlayer.lastLastY)) ||
+                (isOnGround || isOnBlockY || isOnBlockFromY) && (y == lacPlayer.lastY || y == lacPlayer.lastLastY) ||
+                isOnGround && isOnBlockY && isOnBlockFromY && verticalSpeed < 0.05D;
+
+        //Speed
+        boolean isNoBlockAbove = block1.getRelative(0, 2, 0).isPassable();
+        if (Config.speed && isGroundCheck && (speedEffect == null || speedEffect.getAmplifier() <= 1) && speed * 1.2D > 0.280616D) {
+            double complexSpeed = player.isSneaking() ? speed * 1.2D : speed;
+            complexSpeed *= 0.9D;
+            if (complexSpeed > 0.280616) {
+                boolean notJump = time - lacPlayer.lastJumpTime > 1000;
+                if (notJump && isNoBlockAbove) {
+                    if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND))) {
+                        if (speedEffect == null)
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
+                        else if (complexSpeed > 0.459405D)
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
+                    } else {
+                        if (speedEffect == null && complexSpeed > 0.453196)
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
+                    }
+                } else {
+                    if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND))) {
+                        if (speedEffect == null && complexSpeed > 0.386727)
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
+                        else if (complexSpeed > 0.459405D)
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
+                    } else {
+                        if (speedEffect == null && complexSpeed > 0.498356)
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
+                    }
+                }
+            }
+        }
 
         //FastClimb, NoWeb
         if (!block2.equals("AIR") && !block2.contains("GRASS") && !block2.contains("_BUTTON") && !block2.equals("SNOW") ||
@@ -251,12 +298,11 @@ public class MovementCheck implements Listener {
 
             //NoWeb
             if (Config.noWeb && noFlightEffect && speedEffect == null && jumpEffect == null) {
-                String stringBlock1 = block1.getType().name();
-                boolean isCobweb = stringBlock1.contains("COBWEB") && fromBlockUp.getType().name().contains("COBWEB");
-                boolean isSweetBerryBush = stringBlock1.contains("SWEET_BERRY_BUSH") && fromBlockUp.getType().name().contains("SWEET_BERRY_BUSH");
+                boolean isCobweb = block1.getType() == Material.COBWEB && fromBlockUp.getType() == Material.COBWEB;
+                boolean isSweetBerryBush = block.getType() == Material.SWEET_BERRY_BUSH && fromBlockUp.getType() == Material.SWEET_BERRY_BUSH;
                 if (Config.noWebA && (isCobweb && verticalSpeedExactly < -0.3D || isSweetBerryBush && verticalSpeedExactly < -0.4D))
                     Violations.movementViolation(player, CheckTypes.NO_WEB_A_0, lacPlayer);
-                if (groundTimeInRow > 250 && isOnBlockFromY && isOnBlockY) {
+                if (isGroundCheck && isOnBlockFromY && isOnBlockY) {
                     if (Config.noWebB && isCobweb && speed > 0.1D)
                         Violations.movementViolation(player, CheckTypes.NO_WEB_B_0, lacPlayer);
                     if (Config.noWebB && isSweetBerryBush && speed > 0.17D)
@@ -318,7 +364,7 @@ public class MovementCheck implements Listener {
                         fallDistance < 1.0F && (verticalSpeedExactly > 1.0D || velocity < -1.5D))
                     MovementCheck.cancelMovement(player, toLocation, CheckTypes.IRREGULAR_MOVEMENT_A_1, lacPlayer, block1);
                 //GroundSpoofA
-                if (Config.groundSpoofA && isOnGround && (noGroundTimeInRow > 2500 || Config.highSpeedMode && noGroundTimeInRow > 1000) && groundTimeInRow < 20000 && (player
+                if (Config.groundSpoof && isOnGround && (noGroundTimeInRow > 2500 || Config.highSpeedMode && noGroundTimeInRow > 1000) && (player
                         .isSprinting() || player.isSneaking() || speed > 0.4D) && (lookAtAir || fallDistance != 0.0F) && fromY % 0.5D != 0.0D && y % 0.5D != 0.0D)
                     MovementCheck.cancelFlightMovement(player, toLocation, CheckTypes.GROUND_SPOOF_A_0, lacPlayer, block1);
             } else {
@@ -404,66 +450,15 @@ public class MovementCheck implements Listener {
         lacPlayer.lastFallDistance = fallDistance;
         lacPlayer.lastVerticalVelocity = velocity;
 
-        boolean isNoBlockAbovePlayer = fromBlock.getRelative(0, 3, 0).isPassable() && block.getRelative(0, 3, 0).isPassable();
-        boolean isGroundSpoof = Config.groundSpoofB && !isOnGround && y % 0.5D == 0.0D &&
-                (player.isSprinting() || player.isSneaking() || speed > 0.2D && speed - verticalSpeed > verticalSpeed) &&
-                block.getType() != Material.SLIME_BLOCK && ping < 150;
-        if (lacPlayer.lastY == (float) y || lacPlayer.lastY == (float) fromY) {
-            if (lacPlayer.sameY < 15)
-                lacPlayer.sameY++;
-        } else {
-            lacPlayer.lastY = (float) fromY;
-            lacPlayer.sameY = 0;
-        }
 
-        //Ground checks (Speed, GroundSpoofB)
-        if (!isNoGround && verticalSpeed < 0.05D && isNoBlockAbovePlayer &&
-                (noGroundTimeInRow > 1000 || Config.highSpeedMode && noGroundTimeInRow > 400 || lacPlayer.sameY == 13 || isGroundSpoof)) {
-            boolean isSneaking = player.isSneaking() && Config.speedB;
-            double complexSpeed = isSneaking ? speed * 1.5D : speed;
-            if ((Config.speed || Config.groundSpoofB) && complexSpeed > 0.37D) {
-                Vector vector = toLocation.clone().subtract(fromLocation).toVector();
-                if (vector.getX() > 0.03D && vector.getZ() > 0.03D) {
-                    boolean noSpeedingBlock = !isBlockAround(block,
-                            EnumSet.of(Material.ICE, Material.BLUE_ICE, Material.PACKED_ICE, Material.SOUL_SAND));
-                    if (!noSpeedingBlock) {
-                        lacPlayer.lastSpeedingBlockTime = time;
-                    } else if (time - lacPlayer.lastSpeedingBlockTime < 3000) {
-                        noSpeedingBlock = false;
-                    }
-                    if (speedEffect == null && (noSpeedingBlock || complexSpeed > 0.6D) ||
-                            speedEffect != null && (noSpeedingBlock && complexSpeed > 0.53D || complexSpeed > 0.84D)) {
-                        if (isGroundSpoof) {
-                            if (Config.groundSpoofB)
-                                MovementCheck.cancelMovement(player, fromLocation, CheckTypes.GROUND_SPOOF_B_0, lacPlayer, block1);
-                        } else {
-                            if (!isSneaking) {
-                                if (Config.speedA)
-                                    if (groundTimeInRow > 1350 || Config.highSpeedMode && groundTimeInRow > 550) {
-                                        MovementCheck.cancelMovement(player, fromLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
-                                    } else {
-                                        MovementCheck.cancelMovement(player, fromLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
-                                    }
-                            } else {
-                                if (Config.speedB)
-                                    if (groundTimeInRow > 1350 || Config.highSpeedMode && groundTimeInRow > 550) {
-                                        MovementCheck.cancelMovement(player, fromLocation, CheckTypes.SPEED_B_1, lacPlayer, block1);
-                                    } else {
-                                        MovementCheck.cancelMovement(player, fromLocation, CheckTypes.SPEED_B_2, lacPlayer, block1);
-                                    }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (isNoGround)
-            lacPlayer.lastNonGroundTime = time;
         if (isGround)
             lacPlayer.lastGroundTime = time;
         if (!isFall)
             lacPlayer.fallDuration = 0;
+        if (!isOnGround && (!isOnBlockFromY && !isOnBlockY || !isNoBlockAbove))
+            lacPlayer.lastJumpTime = time;
+        lacPlayer.lastLastY = lacPlayer.lastY;
+        lacPlayer.lastY = (float) y;
 
     }
 

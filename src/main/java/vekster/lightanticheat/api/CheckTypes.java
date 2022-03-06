@@ -1,4 +1,4 @@
-package vekster.lightanticheat.extra;
+package vekster.lightanticheat.api;
 
 public enum CheckTypes {
 
@@ -12,8 +12,6 @@ public enum CheckTypes {
     ELYTRA_FLY_B_0,
     SPEED_A_1,
     SPEED_A_2,
-    SPEED_B_1,
-    SPEED_B_2,
     MORE_PACKETS_A_0,
     IRREGULAR_MOVEMENT_A_1,
     IRREGULAR_MOVEMENT_A_2,
@@ -37,7 +35,6 @@ public enum CheckTypes {
     KILL_AURA_B_0,
     KILL_AURA_C_0,
     GROUND_SPOOF_A_0,
-    GROUND_SPOOF_B_0,
     NO_WEB_A_0,
     NO_WEB_B_0
 

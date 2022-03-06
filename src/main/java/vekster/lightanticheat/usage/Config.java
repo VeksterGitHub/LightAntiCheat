@@ -1,5 +1,6 @@
 package vekster.lightanticheat.usage;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class Config {
 
-    public static String punishmentCommand;
+    public static String[] punishmentCommand;
     public static boolean punishmentTimer;
     public static int punishmentTimerDelayTime;
     public static String unknownCommand;
@@ -28,8 +29,6 @@ public class Config {
     public static boolean elytraFlyA;
     public static boolean elytraFlyB;
     public static boolean speed;
-    public static boolean speedA;
-    public static boolean speedB;
     public static boolean morePackets;
     public static boolean irregularMovement;
     public static boolean irregularMovementA;
@@ -52,8 +51,6 @@ public class Config {
     public static boolean nukerB;
     public static boolean reach;
     public static boolean groundSpoof;
-    public static boolean groundSpoofA;
-    public static boolean groundSpoofB;
     public static boolean noWeb;
     public static boolean noWebA;
     public static boolean noWebB;
@@ -65,7 +62,6 @@ public class Config {
     public static int disablerTimeOnLegalFlight;
     public static double minTps;
     public static int maxPing;
-    public static int pingLimit;
     public static double sensitivityMultiplier;
     public static boolean debugMode;
     public static String[] logsFormat;
@@ -89,7 +85,10 @@ public class Config {
         FileConfiguration config = LightAntiCheat.getInstance().getConfig();
 
         ConfigurationSection punishmentSection = config.getConfigurationSection("punishment");
-        punishmentCommand = punishmentSection.getBoolean("enable") ? punishmentSection.getString("punishmentCommand") : null;
+
+        punishmentCommand = punishmentSection.getBoolean("enable") ? punishmentSection.getString("punishmentCommand").split("nextCommand") : null;
+        if (punishmentCommand == null || punishmentCommand.length == 0 || punishmentCommand[0].length() == 0)
+            punishmentCommand = null;
         punishmentTimer = punishmentSection.getInt("punishmentTimer") != 0;
         punishmentTimerDelayTime = punishmentSection.getInt("punishmentTimer");
         sensitivityMultiplier = punishmentSection.getDouble("sensitivityMultiplier");
@@ -105,7 +104,6 @@ public class Config {
         disablerTimeOnLegalFlight = detectionSection.getInt("disablerTimeOnLegalFlight") * 1000;
         minTps = detectionSection.getDouble("minTps");
         maxPing = detectionSection.getInt("maxPing");
-        pingLimit = detectionSection.getInt("pingLimit");
 
         ConfigurationSection debugModeSection = config.getConfigurationSection("debugMode");
         debugMode = debugModeSection.getBoolean("enable");
@@ -123,10 +121,7 @@ public class Config {
         elytraFlyA = elytraFlyString.contains("A");
         elytraFlyB = elytraFlyString.contains("B");
         elytraFly = elytraFlyA || elytraFlyB;
-        String speedString = checksSection.getString("speed");
-        speedA = speedString.contains("A");
-        speedB = speedString.contains("B");
-        speed = speedA || speedB;
+        speed = checksSection.getString("speed").contains("A");
         morePackets = checksSection.getString("morePackets").contains("A");
         String irregularMovementString = checksSection.getString("irregularMovement");
         irregularMovementA = irregularMovementString.contains("A");
@@ -153,10 +148,7 @@ public class Config {
         nukerB = nukerString.contains("B");
         nuker = nukerA || nukerB;
         reach = checksSection.getString("reach").contains("A");
-        String groundSpoofString = checksSection.getString("groundSpoof");
-        groundSpoofA = groundSpoofString.contains("A");
-        groundSpoofB = groundSpoofString.contains("B");
-        groundSpoof = groundSpoofA || groundSpoofB;
+        groundSpoof = checksSection.getString("groundSpoof").contains("A");
         String noWebString = checksSection.getString("noWeb");
         noWebA = noWebString.contains("A");
         noWebB = noWebString.contains("B");

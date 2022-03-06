@@ -36,9 +36,9 @@ public class LACPlayer {
     public float lastNonGroundViolationX = 0.0F;
     public float lastNonGroundViolationY = 0.0F;
     public float lastNonGroundViolationZ = 0.0F;
-    public long lastSpeedingBlockTime = 0;
-    public float lastY = 0;
-    public byte sameY = 0;
+    public float lastY = 1.2345F;
+    public float lastLastY = 1.2345F;
+    public long lastJumpTime = 0;
     public float lastFallDistance = (float) 1.2345;
     public byte sameFallDistance = 0;
     public byte fallDuration = 0;
