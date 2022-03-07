@@ -86,12 +86,11 @@ public class MovementCheck implements Listener {
         }
     }
 
-    public static void speedViolation(Player player, Location fromLocation, Location toLocation, CheckTypes checkType, LACPlayer lacPlayer, Block block) {
-        if (Math.abs(fromLocation.getX() - toLocation.getX()) > 0.03D && Math.abs(fromLocation.getZ() - toLocation.getZ()) > 0.03D) {
-            cancelMovement(player, fromLocation, checkType, lacPlayer, block);
-        } else if (inaccurateViolation(lacPlayer)) {
-            cancelMovement(player, fromLocation, checkType, lacPlayer, block);
-        }
+    public static void speedViolation(Player player, Location fromLocation, Location toLocation, CheckTypes checkType, LACPlayer lacPlayer, Block block, boolean isNoBlockAbove) {
+        if (Math.abs(fromLocation.getX() - toLocation.getX()) > 0.03D && Math.abs(fromLocation.getZ() - toLocation.getZ()) > 0.03D)
+            if (isNoBlockAbove || inaccurateViolation(lacPlayer))
+                if (cancelFirstViolations(lacPlayer, (byte) 1))
+                    cancelMovement(player, fromLocation, checkType, lacPlayer, block);
     }
 
     //Cancel first flags
@@ -260,28 +259,28 @@ public class MovementCheck implements Listener {
         boolean isNoBlockAbove = block1.getRelative(0, 2, 0).isPassable();
         if (Config.speed && isGroundCheck && (speedEffect == null || speedEffect.getAmplifier() <= 1) && speed * 1.2D > 0.280616D) {
             double complexSpeed = player.isSneaking() ? speed * 1.2D : speed;
-            complexSpeed *= 0.9D;
+            complexSpeed *= 0.85D;
             if (complexSpeed > 0.280616) {
-                boolean notJump = time - lacPlayer.lastJumpTime > 1000;
+                boolean notJump = time - lacPlayer.lastJumpTime > 1200;
                 if (notJump && isNoBlockAbove) {
                     if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND))) {
                         if (speedEffect == null)
-                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1, true);
                         else if (complexSpeed > 0.459405D)
-                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1, true);
                     } else {
                         if (speedEffect == null && complexSpeed > 0.453196)
-                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1);
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1, true);
                     }
                 } else {
                     if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND))) {
                         if (speedEffect == null && complexSpeed > 0.386727)
-                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1, isNoBlockAbove);
                         else if (complexSpeed > 0.459405D)
-                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1, isNoBlockAbove);
                     } else {
                         if (speedEffect == null && complexSpeed > 0.498356)
-                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1);
+                            speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1, isNoBlockAbove);
                     }
                 }
             }
@@ -334,8 +333,9 @@ public class MovementCheck implements Listener {
                     (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) &&
                     isFluidwalkAllowed(block)) {
                 if (verticalSpeedExactly == 0.0 || verticalSpeedExactly > 0.3000 && verticalSpeedExactly < 0.30001 || verticalSpeedExactly == 0.5)
-                    if (cancelFirstViolations(lacPlayer, (byte) 1))
-                        MovementCheck.cancelMovement(player, fromLocation, CheckTypes.FLUID_WALK_B_0, lacPlayer, block1);
+                    if (speed > 0.1D)
+                        if (cancelFirstViolations(lacPlayer, (byte) 1))
+                            MovementCheck.cancelMovement(player, fromLocation, CheckTypes.FLUID_WALK_B_0, lacPlayer, block1);
             }
         }
 
