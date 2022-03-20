@@ -263,7 +263,7 @@ public class MovementCheck implements Listener {
             if (complexSpeed > 0.280616) {
                 boolean notJump = time - lacPlayer.lastJumpTime > 1200;
                 if (notJump && isNoBlockAbove) {
-                    if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND))) {
+                    if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND, Material.SOUL_SOIL))) {
                         if (speedEffect == null)
                             speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1, true);
                         else if (complexSpeed > 0.459405D)
@@ -273,7 +273,7 @@ public class MovementCheck implements Listener {
                             speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_1, lacPlayer, block1, true);
                     }
                 } else {
-                    if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND))) {
+                    if (!isBlockAround(block, EnumSet.of(Material.SOUL_SAND, Material.SOUL_SOIL))) {
                         if (speedEffect == null && complexSpeed > 0.386727)
                             speedViolation(player, fromLocation, toLocation, CheckTypes.SPEED_A_2, lacPlayer, block1, isNoBlockAbove);
                         else if (complexSpeed > 0.459405D)
